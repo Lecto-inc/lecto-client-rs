@@ -1,0 +1,132 @@
+[
+  {
+    "label": "test external id3---2022-03",
+    "debtor": {
+      "id": 38553,
+      "debtor_id": "test external id3",
+      "basic_information": {
+        "name": "test name",
+        "name_kana": "test name kana",
+        "birth_date": null,
+        "gender": "none"
+      },
+      "email": {
+        "email": "sample@example.com"
+      },
+      "address": {
+        "address": "東京都xx区xx町x-x-x",
+        "kyc_done": true,
+        "postal_code": "3336666"
+      },
+      "phone_number": {
+        "phone_number": "0312345678",
+        "mobile_number": "09012345678"
+      }
+    },
+    "debts": [
+      {
+        "id": 27801,
+        "debt_id": "test external id5",
+        "debtor_id": "test external id3",
+        "dealt_at": "2022-03-12T00:31:57+09:00",
+        "debt_amount": 10000,
+        "debt_fee": 100,
+        "repayment_due_at": "2022-03-17T00:00:00+09:00",
+        "appendix": "test custom fields",
+        "appendix_parsed": {
+          "item_name": "iPhoneSE 12",
+          "total_amount": "17000"
+        },
+        "remind_segments": [
+          {
+            "name": "AAA"
+          }
+        ]
+      },
+      {
+        "id": 27802,
+        "debt_id": "test external id6",
+        "debtor_id": "test external id3",
+        "dealt_at": "2022-03-12T00:31:57+09:00",
+        "debt_amount": 10000,
+        "debt_fee": 100,
+        "repayment_due_at": "2022-03-18T00:00:00+09:00",
+        "appendix": "test custom fields",
+        "appendix_parsed": {
+          "item_name": "iPhoneSE 12",
+          "total_amount": "17000"
+        },
+        "remind_segments": [
+          {
+            "name": "AAA"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "test external id4---2022-03",
+    "debtor": {
+      "id": 38554,
+      "debtor_id": "test external id4",
+      "basic_information": {
+        "name": "test name",
+        "name_kana": "test name kana",
+        "birth_date": null,
+        "gender": "none"
+      },
+      "email": {
+        "email": "sample@example.com"
+      },
+      "address": {
+        "address": "東京都xx区xx町x-x-x",
+        "kyc_done": true,
+        "postal_code": "3336666"
+      },
+      "phone_number": {
+        "phone_number": "0312345678",
+        "mobile_number": "09012345678"
+      }
+    },
+    "debts": [
+      {
+        "id": 27803,
+        "debt_id": "test external id7",
+        "debtor_id": "test external id4",
+        "dealt_at": "2022-03-12T00:31:57+09:00",
+        "debt_amount": 10000,
+        "debt_fee": 100,
+        "repayment_due_at": "2022-03-17T00:00:00+09:00",
+        "appendix": "test custom fields",
+        "appendix_parsed": {
+          "item_name": "iPhoneSE 12",
+          "total_amount": "17000"
+        },
+        "remind_segments": [
+          {
+            "name": "AAA"
+          }
+        ]
+      },
+      {
+        "id": 27804,
+        "debt_id": "test external id8",
+        "debtor_id": "test external id4",
+        "dealt_at": "2022-03-12T00:31:57+09:00",
+        "debt_amount": 10000,
+        "debt_fee": 100,
+        "repayment_due_at": "2022-03-18T00:00:00+09:00",
+        "appendix": "test custom fields",
+        "appendix_parsed": {
+          "item_name": "iPhoneSE 12",
+          "total_amount": "17000"
+        },
+        "remind_segments": [
+          {
+            "name": "AAA"
+          }
+        ]
+      }
+    ]
+  }
+]
