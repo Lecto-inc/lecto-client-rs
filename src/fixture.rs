@@ -1,6 +1,6 @@
 use serde_json::json;
 
-use crate::debt::DebtRequest;
+use crate::debt::{DebtRequest, PartnerRequest};
 use crate::debt_status::DebtStatusRequest;
 use crate::debtor::DebtorRequest;
 
@@ -32,6 +32,10 @@ pub fn debt_request_sample_data() -> DebtRequest {
             r#"lease_id:xxxx lease_contract_id:xxxxx item_name:Windowsノートパソコン transaction_id:HGBVPKRN_1LCBU8F requester_name:ヤギ ナツキ total_amount:15240 elapsed_month:-2"#.into(),
         ),
         remind_segments: vec!["y2021".into()],
+        partner: Some(PartnerRequest {
+            id: "1234-5678".into(),
+            name: "加盟店アメリケン".into(),
+        }),
     }
 }
 

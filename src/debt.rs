@@ -31,6 +31,13 @@ pub struct DebtRequest {
     pub repayment_due_at: String,
     pub appendix: Option<String>,
     pub remind_segments: Vec<String>,
+    pub partner: Option<PartnerRequest>,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
+pub struct PartnerRequest {
+    pub id: String,
+    pub name: String,
 }
 
 #[cfg(test)]
@@ -51,12 +58,16 @@ mod tests {
                 r#"lease_id:xxxx lease_contract_id:xxxxx item_name:Windowsノートパソコン transaction_id:HGBVPKRN_1LCBU8F requester_name:ヤギ ナツキ total_amount:15240 elapsed_month:-2"#.into(),
             ),
             remind_segments: vec!["y2021".into()],
+            partner: Some(PartnerRequest {
+                id: "1234-5678".into(),
+                name: "加盟店アメリケン".into(),
+            }),
         };
 
         let serialized = serde_json::to_string(&req)?;
         assert_eq!(
             serialized,
-            r#"{"debt_id":"1234-4321","debtor_id":"5678","dealt_at":"2021-12-01 12:13","debt_amount":7400,"debt_fee":540,"repayment_due_at":"2022-03-01","appendix":"lease_id:xxxx lease_contract_id:xxxxx item_name:Windowsノートパソコン transaction_id:HGBVPKRN_1LCBU8F requester_name:ヤギ ナツキ total_amount:15240 elapsed_month:-2","remind_segments":["y2021"]}"#
+            r#"{"debt_id":"1234-4321","debtor_id":"5678","dealt_at":"2021-12-01 12:13","debt_amount":7400,"debt_fee":540,"repayment_due_at":"2022-03-01","appendix":"lease_id:xxxx lease_contract_id:xxxxx item_name:Windowsノートパソコン transaction_id:HGBVPKRN_1LCBU8F requester_name:ヤギ ナツキ total_amount:15240 elapsed_month:-2","remind_segments":["y2021"],"partner":{"id":"1234-5678","name":"加盟店アメリケン"}}"#
         );
 
         Ok(())
