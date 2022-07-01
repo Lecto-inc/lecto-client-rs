@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  lecto-client:
+    container_name: lecto-client
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/app
+    environment: []
+    depends_on: []
+    command: cargo watch -x "run" -w src
+    tty: true
+    networks:
+      - primeape_default
+
+networks:
+  primeape_default:
+    external: true
