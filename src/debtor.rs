@@ -1,3 +1,4 @@
+use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Eq, Hash)]
@@ -41,7 +42,7 @@ pub struct DebtorRequest {
     pub debtor_id: String,
     pub name: String,
     pub name_kana: String,
-    pub birth_date: String,
+    pub birth_date: Option<NaiveDate>,
     pub gender: String,
     pub email: String,
     pub address: String,
@@ -62,7 +63,7 @@ mod tests {
             debtor_id: "test-external-id".into(),
             name: "名前".into(),
             name_kana: "カナ".into(),
-            birth_date: "1999-01-01".into(),
+            birth_date: Some(NaiveDate::from_ymd(1999, 1, 1)),
             gender: "male".into(),
             email: "sample@example.com".into(),
             address: "東京都xx 区xx町x-x-x".into(),

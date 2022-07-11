@@ -1,3 +1,4 @@
+use chrono::{Local, NaiveDate, TimeZone};
 use serde_json::json;
 
 use crate::debt::{DebtRequest, Partner};
@@ -9,7 +10,7 @@ pub fn debtor_request_sample_data() -> DebtorRequest {
         debtor_id: "test-external-id".into(),
         name: "名前".into(),
         name_kana: "カナ".into(),
-        birth_date: "1999-01-01".into(),
+        birth_date: Some(NaiveDate::from_ymd(1999, 1, 1)),
         gender: "male".into(),
         email: "sample@example.com".into(),
         address: "東京都xx 区xx町x-x-x".into(),
@@ -24,10 +25,10 @@ pub fn debt_request_sample_data() -> DebtRequest {
     DebtRequest {
         debt_id: "1234-4321".into(),
         debtor_id: "5678".into(),
-        dealt_at: "2021-12-01 12:13".into(),
+        dealt_at: Local.ymd(2021, 12, 1).and_hms(12, 13, 0),
         debt_amount: 7400,
         debt_fee: Some(540),
-        repayment_due_at: "2022-03-01".into(),
+        repayment_due_at: Local.ymd(2022, 3, 1).and_hms(23, 59, 59),
         appendix: Some(
             r#"lease_id:xxxx lease_contract_id:xxxxx item_name:Windowsノートパソコン transaction_id:HGBVPKRN_1LCBU8F requester_name:ヤギ ナツキ total_amount:15240 elapsed_month:-2"#.into(),
         ),
@@ -43,8 +44,8 @@ pub fn debt_status_request_sample_data() -> DebtStatusRequest {
     DebtStatusRequest {
         debt_id: "1234-5678".into(),
         status: "repaid".into(),
-        changed_at: "2021-11-15 12:34".into(),
-        expire_at: "9999-12-31".into(),
+        changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
+        expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
     }
 }
 
