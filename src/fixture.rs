@@ -3,7 +3,7 @@ use serde_json::json;
 
 use crate::debt::{DebtRequest, Partner};
 use crate::debt_status::DebtStatusRequest;
-use crate::debtor::DebtorRequest;
+use crate::debtor::{DebtorRequest, Gender};
 
 pub fn debtor_request_sample_data() -> DebtorRequest {
     DebtorRequest {
@@ -11,7 +11,7 @@ pub fn debtor_request_sample_data() -> DebtorRequest {
         name: "名前".into(),
         name_kana: "カナ".into(),
         birth_date: Some(NaiveDate::from_ymd(1999, 1, 1)),
-        gender: "male".into(),
+        gender: Gender::Male,
         email: "sample@example.com".into(),
         address: "東京都xx 区xx町x-x-x".into(),
         kyc_done: true,
