@@ -1,5 +1,4 @@
-use itertools::Itertools;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 use crate::{debt::Debt, debtor::Debtor};
 
@@ -17,7 +16,7 @@ mod tests {
 
     use crate::{
         debt::Segment,
-        debtor::{DebtorAddress, DebtorBasicInformation, DebtorEmail, DebtorPhoneNumber},
+        debtor::{DebtorAddress, DebtorBasicInformation, DebtorEmail, DebtorPhoneNumber, Gender},
     };
 
     use super::*;
@@ -39,7 +38,7 @@ mod tests {
                         name: "test name".into(),
                         name_kana: Some("test name kana".into()),
                         birth_date: None,
-                        gender: "none".into(),
+                        gender: Gender::None,
                     },
                     email: DebtorEmail {
                         email: "sample@example.com".into()

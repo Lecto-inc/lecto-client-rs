@@ -1,3 +1,4 @@
+use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Eq, Hash)]
@@ -15,7 +16,7 @@ pub struct DebtorBasicInformation {
     pub name: String,
     pub name_kana: Option<String>,
     pub birth_date: Option<String>,
-    pub gender: String,
+    pub gender: Gender,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Eq, Hash)]
@@ -41,14 +42,29 @@ pub struct DebtorRequest {
     pub debtor_id: String,
     pub name: String,
     pub name_kana: String,
-    pub birth_date: String,
-    pub gender: String,
+    pub birth_date: Option<NaiveDate>,
+    pub gender: Gender,
     pub email: String,
     pub address: String,
     pub kyc_done: bool,
     pub postal_code: String,
     pub phone_number: String,
     pub mobile_number: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum Gender {
+    None,
+    Male,
+    Female,
+    Other,
+}
+
+impl Default for Gender {
+    fn default() -> Self {
+        Self::None
+    }
 }
 
 #[cfg(test)]
@@ -62,8 +78,8 @@ mod tests {
             debtor_id: "test-external-id".into(),
             name: "名前".into(),
             name_kana: "カナ".into(),
-            birth_date: "1999-01-01".into(),
-            gender: "male".into(),
+            birth_date: Some(NaiveDate::from_ymd(1999, 1, 1)),
+            gender: Gender::Male,
             email: "sample@example.com".into(),
             address: "東京都xx 区xx町x-x-x".into(),
             kyc_done: true,
