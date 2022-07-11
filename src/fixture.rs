@@ -51,25 +51,26 @@ pub fn debt_status_request_sample_data() -> DebtStatusRequest {
 
 pub fn lecto_debtor_response() -> serde_json::Value {
     json!({
-      "id": 111,
-      "basic_information": {
-        "name": "name",
-        "name_kana": "name kana",
-        "birth_date": "1999-01-01",
-        "gender": "male",
-      },
-      "email": {
-        "email": "sample@example.com",
-      },
-      "address": {
-        "address": "東京都xx区xx町x-x-x",
-        "kyc_done": true,
-        "postal_code": "3336666",
-      },
-      "phone_number": {
-        "phone_number": "0312345678",
-        "mobile_number": "09012345678",
-      },
+        "id": 111,
+        "debtor_id": "DEBTOR_111",
+        "basic_information": {
+            "name": "name",
+            "name_kana": "name kana",
+            "birth_date": "1999-01-01",
+            "gender": "male",
+        },
+        "email": {
+            "email": "sample@example.com",
+        },
+        "address": {
+            "address": "東京都xx区xx町x-x-x",
+            "kyc_done": true,
+            "postal_code": "3336666",
+        },
+        "phone_number": {
+            "phone_number": "0312345678",
+            "mobile_number": "09012345678",
+        },
     })
 }
 
@@ -78,10 +79,10 @@ pub fn lecto_debt_response() -> serde_json::Value {
         "id": 1,
         "debt_id": "debt id",
         "debtor_id": "debtor id",
-        "dealt_at": "2021-01-01T10:00:00:Z",
+        "dealt_at": "2021-01-01T10:00:00+09:00",
         "debt_amount": 100,
         "debt_fee": 0,
-        "repayment_due_at": "2021-01-01T10:00:00:Z",
+        "repayment_due_at": "2021-01-01T10:00:00+09:00",
         "appendix": "aaaaa",
         "remind_segments": [
             { "name": "seg-1" },
@@ -92,9 +93,10 @@ pub fn lecto_debt_response() -> serde_json::Value {
 
 pub fn lecto_debt_status_response() -> serde_json::Value {
     json!({
+        "id": 1,
         "debt_id": "debt id",
-        "changed_at": "2021-01-01T10:00:00:Z",
-        "expire_at": "2021-01-01T10:00:00:Z",
+        "changed_at": "2021-01-01T10:00:00+09:00",
+        "expire_at": "2021-01-01T10:00:00+09:00",
         "status": "repaid",
         "status_id": "LECTO-400"
     })
