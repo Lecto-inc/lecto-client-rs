@@ -7,3 +7,10 @@ pub mod util;
 
 #[cfg(test)]
 pub mod fixture;
+
+pub use debt::{Debt, DebtRequest, Partner};
+pub use debt_status::{DebtStatus, DebtStatusRequest, DebtStatusVariable};
+pub use debtor::{
+    Debtor, DebtorAddress, DebtorBasicInformation, DebtorEmail, DebtorPhoneNumber, DebtorRequest,
+    Gender,
+};

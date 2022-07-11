@@ -15,7 +15,7 @@ pub struct Debtor {
 pub struct DebtorBasicInformation {
     pub name: String,
     pub name_kana: Option<String>,
-    pub birth_date: Option<String>,
+    pub birth_date: Option<NaiveDate>,
     pub gender: Gender,
 }
 
@@ -69,6 +69,8 @@ impl Default for Gender {
 
 #[cfg(test)]
 mod tests {
+    use crate::fixture::lecto_debtor_response;
+
     use super::*;
     use pretty_assertions::assert_eq;
 
@@ -94,6 +96,13 @@ mod tests {
             r#"{"debtor_id":"test-external-id","name":"名前","name_kana":"カナ","birth_date":"1999-01-01","gender":"male","email":"sample@example.com","address":"東京都xx 区xx町x-x-x","kyc_done":true,"postal_code":"3336666","phone_number":"0312345678","mobile_number":"09012345678"}"#
         );
 
+        Ok(())
+    }
+
+    #[test]
+    fn test_deserialize_response() -> anyhow::Result<()> {
+        let res_json = serde_json::to_string(&lecto_debtor_response())?;
+        let _debtor: Debtor = serde_json::from_str(&res_json)?;
         Ok(())
     }
 }

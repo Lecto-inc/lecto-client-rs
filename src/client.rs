@@ -6,7 +6,7 @@ use reqwest::{Response, StatusCode};
 use serde::de::DeserializeOwned;
 
 use crate::util::join_url;
-use crate::{debt::DebtRequest, debt_status::DebtStatusRequest, debtor::DebtorRequest};
+use crate::{Debt, DebtRequest, DebtStatus, DebtStatusRequest, Debtor, DebtorRequest};
 
 use super::remind_group::remind::Remind;
 
@@ -51,10 +51,7 @@ impl Client {
         }
     }
 
-    pub async fn post_debtor(
-        &self,
-        req: DebtorRequest,
-    ) -> anyhow::Result<serde_json::value::Value> {
+    pub async fn post_debtor(&self, req: DebtorRequest) -> anyhow::Result<Debtor> {
         let headers = self.common_headers()?;
         let url = join_url(&self.base_url, &["debtors"])?;
 
@@ -71,7 +68,7 @@ impl Client {
         Self::handle_response(Some(req), res).await
     }
 
-    pub async fn post_debt(&self, req: DebtRequest) -> anyhow::Result<serde_json::value::Value> {
+    pub async fn post_debt(&self, req: DebtRequest) -> anyhow::Result<Debt> {
         let headers = self.common_headers()?;
         let url = join_url(&self.base_url, &["debts"])?;
 
@@ -88,10 +85,7 @@ impl Client {
         Self::handle_response(Some(req), res).await
     }
 
-    pub async fn patch_debt_statuses(
-        &self,
-        req: DebtStatusRequest,
-    ) -> anyhow::Result<serde_json::value::Value> {
+    pub async fn patch_debt_statuses(&self, req: DebtStatusRequest) -> anyhow::Result<DebtStatus> {
         let headers = self.common_headers()?;
         let url = join_url(&self.base_url, &["debt_statuses"])?;
 
@@ -245,7 +239,7 @@ mod tests {
             .create();
 
         let res = client.post_debtor(req).await?;
-        assert_eq!(res, response_body);
+        assert_matches!(res, Debtor { .. });
         mock.assert();
 
         Ok(())
