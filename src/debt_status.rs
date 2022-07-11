@@ -1,10 +1,21 @@
 use chrono::{DateTime, Local};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DebtStatusVariable {
+    Active,
+    AutoActivated,
+    Repaid,
+    DebtCancelled,
+    BadDebtFixed,
+    Suspended,
+}
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct DebtStatusRequest {
     pub debt_id: String,
-    pub status: String,
+    pub status: DebtStatusVariable,
     pub changed_at: DateTime<Local>,
     pub expire_at: DateTime<Local>,
 }
@@ -20,7 +31,7 @@ mod tests {
     fn test_serialize_reponse() -> anyhow::Result<()> {
         let req = DebtStatusRequest {
             debt_id: "1234-5678".into(),
-            status: "repaid".into(),
+            status: DebtStatusVariable::Repaid,
             changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
             expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
         };

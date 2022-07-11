@@ -2,7 +2,7 @@ use chrono::{Local, NaiveDate, TimeZone};
 use serde_json::json;
 
 use crate::debt::{DebtRequest, Partner};
-use crate::debt_status::DebtStatusRequest;
+use crate::debt_status::{DebtStatusRequest, DebtStatusVariable};
 use crate::debtor::{DebtorRequest, Gender};
 
 pub fn debtor_request_sample_data() -> DebtorRequest {
@@ -43,7 +43,7 @@ pub fn debt_request_sample_data() -> DebtRequest {
 pub fn debt_status_request_sample_data() -> DebtStatusRequest {
     DebtStatusRequest {
         debt_id: "1234-5678".into(),
-        status: "repaid".into(),
+        status: DebtStatusVariable::Repaid,
         changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
         expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
     }
