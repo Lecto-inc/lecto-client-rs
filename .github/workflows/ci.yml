@@ -4,6 +4,10 @@ on:
     types: [opened, synchronize]
     paths-ignore:
       - "**.md"
+
+env:
+  TZ: Asia/Tokyo
+
 jobs:
   test:
     name: run test
