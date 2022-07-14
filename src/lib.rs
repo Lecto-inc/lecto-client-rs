@@ -5,6 +5,7 @@ pub mod debtor;
 pub mod remind_group;
 pub mod util;
 
+// TODO: すぐ消すよ
 #[cfg(test)]
 pub mod fixture;
 
