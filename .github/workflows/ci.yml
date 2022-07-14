@@ -4,6 +4,11 @@ on:
     types: [opened, synchronize]
     paths-ignore:
       - "**.md"
+  push:
+    paths-ignore:
+      - "**.md"
+    branches:
+      - master
 
 env:
   TZ: Asia/Tokyo
