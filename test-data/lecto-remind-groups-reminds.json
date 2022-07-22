@@ -31,6 +31,7 @@
         "dealt_at": "2022-03-12T00:31:57+09:00",
         "debt_amount": 10000,
         "debt_fee": 100,
+        "debt_delinquency_charge": 500,
         "repayment_due_at": "2022-03-17T00:00:00+09:00",
         "appendix": "test custom fields",
         "appendix_parsed": {
@@ -50,6 +51,7 @@
         "dealt_at": "2022-03-12T00:31:57+09:00",
         "debt_amount": 10000,
         "debt_fee": 100,
+        "debt_delinquency_charge": 500,
         "repayment_due_at": "2022-03-18T00:00:00+09:00",
         "appendix": "test custom fields",
         "appendix_parsed": {
@@ -96,6 +98,7 @@
         "dealt_at": "2022-03-12T00:31:57+09:00",
         "debt_amount": 10000,
         "debt_fee": 100,
+        "debt_delinquency_charge": 500,
         "repayment_due_at": "2022-03-17T00:00:00+09:00",
         "appendix": "test custom fields",
         "appendix_parsed": {
@@ -115,6 +118,7 @@
         "dealt_at": "2022-03-12T00:31:57+09:00",
         "debt_amount": 10000,
         "debt_fee": 100,
+        "debt_delinquency_charge": 500,
         "repayment_due_at": "2022-03-18T00:00:00+09:00",
         "appendix": "test custom fields",
         "appendix_parsed": {

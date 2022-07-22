@@ -28,6 +28,7 @@ pub fn debt_request_sample_data() -> DebtRequest {
         dealt_at: Local.ymd(2021, 12, 1).and_hms(12, 13, 0),
         debt_amount: 7400,
         debt_fee: Some(540),
+        debt_delinquency_charge: Some(680),
         repayment_due_at: Local.ymd(2022, 3, 1).and_hms(23, 59, 59),
         appendix: Some(
             r#"lease_id:xxxx lease_contract_id:xxxxx item_name:Windowsノートパソコン transaction_id:HGBVPKRN_1LCBU8F requester_name:ヤギ ナツキ total_amount:15240 elapsed_month:-2"#.into(),
@@ -82,6 +83,7 @@ pub fn lecto_debt_response() -> serde_json::Value {
         "dealt_at": "2021-01-01T10:00:00+09:00",
         "debt_amount": 100,
         "debt_fee": 0,
+        "debt_delinquency_charge": 10,
         "repayment_due_at": "2021-01-01T10:00:00+09:00",
         "appendix": "aaaaa",
         "remind_segments": [
