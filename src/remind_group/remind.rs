@@ -61,6 +61,7 @@ mod tests {
                         dealt_at: "2022-03-12T00:31:57+09:00".parse().unwrap(),
                         debt_amount: 10000,
                         debt_fee: Some(100),
+                        debt_delinquency_charge: Some(500),
                         repayment_due_at: "2022-03-17T00:00:00+09:00".parse().unwrap(),
                         appendix: "test custom fields".into(),
                         appendix_parsed: [
@@ -77,6 +78,7 @@ mod tests {
                         dealt_at: "2022-03-12T00:31:57+09:00".parse().unwrap(),
                         debt_amount: 10000,
                         debt_fee: Some(100),
+                        debt_delinquency_charge: Some(500),
                         repayment_due_at: "2022-03-18T00:00:00+09:00".parse().unwrap(),
                         appendix: "test custom fields".into(),
                         appendix_parsed: [
