@@ -70,6 +70,7 @@ mod tests {
                         ].into_iter().collect(),
                         remind_segments: vec![Segment { name: "AAA".into() }],
                         partner: None,
+                        debt_status: None,
                     },
                     Debt {
                         id: 27802,
@@ -87,6 +88,7 @@ mod tests {
                         ].into_iter().collect(),
                         remind_segments: vec![Segment { name: "AAA".into() }],
                         partner: None,
+                        debt_status: None,
                     },
                 ],
             })

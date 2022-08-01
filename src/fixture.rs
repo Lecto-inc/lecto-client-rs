@@ -38,6 +38,12 @@ pub fn debt_request_sample_data() -> DebtRequest {
             id: "1234-5678".into(),
             name: "加盟店アメリケン".into(),
         }),
+        debt_status: Some(DebtStatusRequest{
+            debt_id: "1234-5678".into(),
+            status: DebtStatusVariable::Repaid,
+            changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
+            expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
+        })
     }
 }
 
