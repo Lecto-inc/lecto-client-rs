@@ -25,7 +25,9 @@ pub struct DebtStatus {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct DebtStatusRequest {
     pub debt_id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub status_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<DebtStatusVariable>,
     pub changed_at: DateTime<Local>,
     pub expire_at: DateTime<Local>,
