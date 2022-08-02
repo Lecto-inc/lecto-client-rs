@@ -40,9 +40,10 @@ pub fn debt_request_sample_data() -> DebtRequest {
         }),
         debt_status: Some(DebtStatusRequest{
             debt_id: "1234-5678".into(),
-            status: DebtStatusVariable::Repaid,
+            status: Some(DebtStatusVariable::Repaid),
             changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
             expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
+            status_id: None,
         })
     }
 }
@@ -50,9 +51,10 @@ pub fn debt_request_sample_data() -> DebtRequest {
 pub fn debt_status_request_sample_data() -> DebtStatusRequest {
     DebtStatusRequest {
         debt_id: "1234-5678".into(),
-        status: DebtStatusVariable::Repaid,
+        status: Some(DebtStatusVariable::Repaid),
         changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
         expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
+        status_id: None,
     }
 }
 

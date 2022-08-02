@@ -25,7 +25,8 @@ pub struct DebtStatus {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct DebtStatusRequest {
     pub debt_id: String,
-    pub status: DebtStatusVariable,
+    pub status_id: Option<String>,
+    pub status: Option<DebtStatusVariable>,
     pub changed_at: DateTime<Local>,
     pub expire_at: DateTime<Local>,
 }
@@ -43,15 +44,16 @@ mod tests {
     fn test_serialize_reponse() -> anyhow::Result<()> {
         let req = DebtStatusRequest {
             debt_id: "1234-5678".into(),
-            status: DebtStatusVariable::Repaid,
+            status: Some(DebtStatusVariable::Repaid),
             changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
             expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
+            status_id: Some("LECTO-001".into()),
         };
 
         let serialized = serde_json::to_string(&req)?;
         assert_eq!(
             serialized,
-            r#"{"debt_id":"1234-5678","status":"repaid","changed_at":"2021-11-15T12:34:00+09:00","expire_at":"9999-12-31T23:59:59+09:00"}"#
+            r#"{"debt_id":"1234-5678","status_id":"LECTO-001","status":"repaid","changed_at":"2021-11-15T12:34:00+09:00","expire_at":"9999-12-31T23:59:59+09:00"}"#
         );
 
         Ok(())
