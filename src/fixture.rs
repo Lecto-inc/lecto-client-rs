@@ -96,6 +96,14 @@ pub fn lecto_debt_response() -> serde_json::Value {
             { "name": "seg-1" },
             { "name": "seg-2" },
         ],
+        "debt_status": {
+            "id": 10,
+            "debt_id": "debt id",
+            "changed_at": "2022-03-12T00:31:57+09:00",
+            "expire_at": "9999-12-31T23:59:59+09:00",
+            "status": "active",
+            "status_id": "LECTO-01"
+        }
     })
 }
 

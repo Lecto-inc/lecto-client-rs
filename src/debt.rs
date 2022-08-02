@@ -21,8 +21,7 @@ pub struct Debt {
     pub remind_segments: Vec<Segment>,
     #[serde(default)]
     pub partner: Option<Partner>,
-    #[serde(default)]
-    pub debt_status: Option<DebtStatus>,
+    pub debt_status: DebtStatus,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]

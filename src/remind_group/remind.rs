@@ -17,6 +17,7 @@ mod tests {
     use crate::{
         debt::Segment,
         debtor::{DebtorAddress, DebtorBasicInformation, DebtorEmail, DebtorPhoneNumber, Gender},
+        DebtStatus, DebtStatusVariable,
     };
 
     use super::*;
@@ -70,7 +71,14 @@ mod tests {
                         ].into_iter().collect(),
                         remind_segments: vec![Segment { name: "AAA".into() }],
                         partner: None,
-                        debt_status: None,
+                        debt_status: DebtStatus{
+                            id: 10,
+                            debt_id: "test external id5".into(),
+                            changed_at: "2022-03-12T00:31:57+09:00".parse().unwrap(),
+                            expire_at: "9999-12-31T23:59:59+09:00".parse().unwrap(),
+                            status: DebtStatusVariable::DebtCancelled,
+                            status_id: "LECTO-01".into()
+                        },
                     },
                     Debt {
                         id: 27802,
@@ -88,7 +96,14 @@ mod tests {
                         ].into_iter().collect(),
                         remind_segments: vec![Segment { name: "AAA".into() }],
                         partner: None,
-                        debt_status: None,
+                        debt_status: DebtStatus{
+                            id: 11,
+                            debt_id: "test external id6".into(),
+                            changed_at: "2022-03-12T00:31:57+09:00".parse().unwrap(),
+                            expire_at: "9999-12-31T23:59:59+09:00".parse().unwrap(),
+                            status: DebtStatusVariable::Active,
+                            status_id: "LECTO-02".into()
+                        },
                     },
                 ],
             })
