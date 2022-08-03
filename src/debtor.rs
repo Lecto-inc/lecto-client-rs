@@ -42,6 +42,7 @@ pub struct DebtorRequest {
     pub debtor_id: String,
     pub name: String,
     pub name_kana: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub birth_date: Option<NaiveDate>,
     pub gender: Gender,
     pub email: String,

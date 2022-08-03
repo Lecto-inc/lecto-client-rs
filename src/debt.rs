@@ -35,12 +35,17 @@ pub struct DebtRequest {
     pub debtor_id: String,
     pub dealt_at: DateTime<Local>,
     pub debt_amount: i64,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub debt_fee: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub debt_delinquency_charge: Option<i64>,
     pub repayment_due_at: DateTime<Local>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub appendix: Option<String>,
     pub remind_segments: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub partner: Option<Partner>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub debt_status: Option<DebtStatusRequest>,
 }
 
