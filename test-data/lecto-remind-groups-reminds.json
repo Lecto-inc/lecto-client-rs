@@ -42,7 +42,15 @@
           {
             "name": "AAA"
           }
-        ]
+        ],
+        "debt_status": {
+          "id": 10,
+          "debt_id": "test external id5",
+          "changed_at": "2022-03-12T00:31:57+09:00",
+          "expire_at": "9999-12-31T23:59:59+09:00",
+          "status": "debt_cancelled",
+          "status_id": "LECTO-01"
+        }
       },
       {
         "id": 27802,
@@ -62,7 +70,15 @@
           {
             "name": "AAA"
           }
-        ]
+        ],
+        "debt_status": {
+          "id": 11,
+          "debt_id": "test external id6",
+          "changed_at": "2022-03-12T00:31:57+09:00",
+          "expire_at": "9999-12-31T23:59:59+09:00",
+          "status": "active",
+          "status_id": "LECTO-02"
+        }
       }
     ]
   },
@@ -109,7 +125,15 @@
           {
             "name": "AAA"
           }
-        ]
+        ],
+        "debt_status": {
+          "id": 12,
+          "debt_id": "test external id7",
+          "changed_at": "2022-03-12T00:31:57+09:00",
+          "expire_at": "9999-12-31T23:59:59+09:00",
+          "status": "repaid",
+          "status_id": "LECTO-03"
+        }
       },
       {
         "id": 27804,
@@ -129,8 +153,17 @@
           {
             "name": "AAA"
           }
-        ]
+        ],
+        "debt_status": {
+          "id": 12,
+          "debt_id": "test external id8",
+          "changed_at": "2022-03-12T00:31:57+09:00",
+          "expire_at": "9999-12-31T23:59:59+09:00",
+          "status": "bad_debt_fixed",
+          "status_id": "LECTO-04"
+        }
       }
     ]
   }
 ]
+

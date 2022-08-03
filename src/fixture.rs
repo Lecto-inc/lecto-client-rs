@@ -38,15 +38,23 @@ pub fn debt_request_sample_data() -> DebtRequest {
             id: "1234-5678".into(),
             name: "加盟店アメリケン".into(),
         }),
+        debt_status: Some(DebtStatusRequest{
+            debt_id: "1234-5678".into(),
+            status: Some(DebtStatusVariable::Repaid),
+            changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
+            expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
+            status_id: None,
+        })
     }
 }
 
 pub fn debt_status_request_sample_data() -> DebtStatusRequest {
     DebtStatusRequest {
         debt_id: "1234-5678".into(),
-        status: DebtStatusVariable::Repaid,
+        status: Some(DebtStatusVariable::Repaid),
         changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
         expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
+        status_id: None,
     }
 }
 
@@ -90,6 +98,14 @@ pub fn lecto_debt_response() -> serde_json::Value {
             { "name": "seg-1" },
             { "name": "seg-2" },
         ],
+        "debt_status": {
+            "id": 10,
+            "debt_id": "debt id",
+            "changed_at": "2022-03-12T00:31:57+09:00",
+            "expire_at": "9999-12-31T23:59:59+09:00",
+            "status": "active",
+            "status_id": "LECTO-01"
+        }
     })
 }
 
