@@ -13,19 +13,19 @@ use super::remind_group::remind::Remind;
 /// TODO: debtorでもdebtsでも使えるようにrequest,responseをStringにしているがDebtor以外の型ができたタイミングでGenericsにしたほうがいい気がする
 #[derive(thiserror::Error, Debug)]
 pub enum LectoError {
-    #[error("Status: {status} Req: {request:#?} Res: {response:#?}")]
+    #[error("Status: {status} Res: {response:#?}")]
     UnprocessableEntity {
         status: StatusCode,
         request: String,
         response: String,
     },
-    #[error("Status: {status} Req: {request:#?} Res: {response:#?}")]
+    #[error("Status: {status} Res: {response:#?}")]
     BadRequest {
         status: StatusCode,
         request: String,
         response: String,
     },
-    #[error("Status: {status} Req: {request:#?} Res: {response:#?}")]
+    #[error("Status: {status} Res: {response:#?}")]
     InternalServerError {
         status: StatusCode,
         request: String,
