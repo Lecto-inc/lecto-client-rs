@@ -42,6 +42,7 @@ pub struct DebtRequest {
     pub repayment_due_at: DateTime<Local>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub appendix: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub remind_segments: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub partner: Option<Partner>,
