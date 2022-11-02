@@ -42,7 +42,7 @@ pub struct DebtRequest {
     pub repayment_due_at: DateTime<Local>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub appendix: Option<String>,
-    pub remind_segments: Vec<String>,
+    pub remind_segments: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub partner: Option<Partner>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -76,7 +76,7 @@ mod tests {
             appendix: Some(
                 r#"lease_id:xxxx lease_contract_id:xxxxx item_name:Windowsノートパソコン transaction_id:HGBVPKRN_1LCBU8F requester_name:ヤギ ナツキ total_amount:15240 elapsed_month:-2"#.into(),
             ),
-            remind_segments: vec!["y2021".into()],
+            remind_segments: Some(vec!["y2021".into()]),
             partner: Some(Partner {
                 id: "1234-5678".into(),
                 name: "加盟店アメリケン".into(),
