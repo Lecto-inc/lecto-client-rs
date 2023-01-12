@@ -1,4 +1,5 @@
 use std::fmt::Debug;
+use std::time::Duration;
 
 use chrono::NaiveDate;
 use reqwest::header::HeaderMap;
@@ -42,11 +43,14 @@ pub struct Client {
 }
 
 impl Client {
-    pub fn new(api_key: String, base_url: String, max_retry: usize) -> Client {
+    pub fn new(api_key: String, base_url: String, max_retry: usize, timeout_secs: u64) -> Client {
         Client {
             api_key,
             base_url,
-            client: reqwest::Client::new(),
+            client: reqwest::Client::builder()
+                .timeout(Duration::from_secs(timeout_secs))
+                .build()
+                .unwrap(),
             max_retry,
         }
     }
@@ -188,7 +192,6 @@ where
     R: core::future::Future<Output = Result<reqwest::Response, reqwest::Error>>,
     F: Fn() -> R,
 {
-    use std::time::Duration;
     use tokio::time::sleep;
 
     let mut attempts = 1;
@@ -228,7 +231,7 @@ mod tests {
     #[tokio::test]
     async fn test_post_debtor() -> anyhow::Result<()> {
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1);
+        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
         let response_body = lecto_debtor_response();
         let mock = mockito::mock("POST", "/debtors")
@@ -248,7 +251,7 @@ mod tests {
     #[tokio::test]
     async fn test_post_debtor_validation_error() -> anyhow::Result<()> {
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1);
+        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["UnprocessableEntity"],
@@ -277,7 +280,7 @@ mod tests {
     #[tokio::test]
     async fn test_post_debtor_internal_server_error() -> anyhow::Result<()> {
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1);
+        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["InternalServerError"],
@@ -306,7 +309,7 @@ mod tests {
     #[tokio::test]
     async fn test_post_debtor_reqwest_error() {
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), "https://awsedfghjk.aiueo".into(), 1);
+        let client = Client::new(api_key.into(), "https://awsedfghjk.aiueo".into(), 1, 20);
 
         let res = client
             .post_debtor(fixture::debtor_request_sample_data())
@@ -320,7 +323,7 @@ mod tests {
     #[tokio::test]
     async fn test_post_debt() -> anyhow::Result<()> {
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1);
+        let client = Client::new(api_key.into(), mockito::server_url(), 1, 20);
         let req = fixture::debt_request_sample_data();
         let mock = mockito::mock("POST", "/debts")
             .with_status(200)
@@ -338,7 +341,7 @@ mod tests {
     #[tokio::test]
     async fn test_post_debt_validation_error() -> anyhow::Result<()> {
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1);
+        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
         let req = fixture::debt_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["UnprocessableEntity"],
@@ -367,7 +370,7 @@ mod tests {
     #[tokio::test]
     async fn test_patch_debt_status() -> anyhow::Result<()> {
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1);
+        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
         let req = fixture::debt_status_request_sample_data();
         let mock = mockito::mock("PATCH", "/debt_statuses")
             .with_status(200)
@@ -385,7 +388,7 @@ mod tests {
     #[tokio::test]
     async fn test_patch_debt_status_validation_error() -> anyhow::Result<()> {
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1);
+        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
         let req = fixture::debt_status_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["UnprocessableEntity"],
@@ -414,7 +417,7 @@ mod tests {
     #[tokio::test]
     async fn test_get_reminds() -> anyhow::Result<()> {
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1);
+        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
         let remind_group_id = 1;
         let remind_at = NaiveDate::from_ymd(2022, 2, 2);
         let json = std::fs::read_to_string("test-data/lecto-remind-groups-reminds.json")
