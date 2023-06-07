@@ -228,6 +228,10 @@ mod tests {
     use mockito::Matcher;
     use serde_json::json;
 
+    fn mock_server() -> mockito::ServerGuard {
+        mockito::Server::new()
+    }
+
     #[tokio::test]
     async fn test_post_debtor() -> anyhow::Result<()> {
         let api_key = "apikey";
@@ -419,7 +423,7 @@ mod tests {
         let api_key = "apikey";
         let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
         let remind_group_id = 1;
-        let remind_at = NaiveDate::from_ymd(2022, 2, 2);
+        let remind_at = NaiveDate::from_ymd_opt(2022, 2, 2).unwrap();
         let json = std::fs::read_to_string("test-data/lecto-remind-groups-reminds.json")
             .map_err(|e| dbg!(e))?;
 

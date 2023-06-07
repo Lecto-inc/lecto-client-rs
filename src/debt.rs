@@ -69,11 +69,11 @@ mod tests {
         let req = DebtRequest {
             debt_id: "1234-4321".into(),
             debtor_id: "5678".into(),
-            dealt_at: Local.ymd(2021, 12, 1).and_hms(12, 13, 0),
+            dealt_at: Local.with_ymd_and_hms(2021, 12, 1, 12, 13, 0).unwrap(),
             debt_amount: 7400,
             debt_fee: Some(540),
             debt_delinquency_charge: Some(680),
-            repayment_due_at: Local.ymd(2022, 3, 1).and_hms(0, 0, 0),
+            repayment_due_at: Local.with_ymd_and_hms(2022, 3, 1, 0, 0, 0).unwrap(),
             appendix: Some(
                 r#"lease_id:xxxx lease_contract_id:xxxxx item_name:Windowsノートパソコン transaction_id:HGBVPKRN_1LCBU8F requester_name:ヤギ ナツキ total_amount:15240 elapsed_month:-2"#.into(),
             ),
@@ -85,8 +85,8 @@ mod tests {
             debt_status: Some(DebtStatusRequest{
                 debt_id: "1234-5678".into(),
                 status: Some(DebtStatusVariable::Repaid),
-                changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
-                expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
+                changed_at: Local.with_ymd_and_hms(2021, 11, 15, 12, 34, 0).unwrap(),
+                expire_at: Local.with_ymd_and_hms(9999, 12, 31, 23, 59, 59).unwrap(),
                 status_id: None,
             }),
         };
