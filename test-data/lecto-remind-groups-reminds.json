@@ -38,6 +38,10 @@
           "item_name": "iPhoneSE 12",
           "total_amount": "17000"
         },
+        "custom_fields": {
+          "item_name": "iPhoneSE 12",
+          "total_amount": "17000"
+        },
         "remind_segments": [
           {
             "name": "AAA"
@@ -63,6 +67,10 @@
         "repayment_due_at": "2022-03-18T00:00:00+09:00",
         "appendix": "test custom fields",
         "appendix_parsed": {
+          "item_name": "iPhoneSE 12",
+          "total_amount": "17000"
+        },
+        "custom_fields": {
           "item_name": "iPhoneSE 12",
           "total_amount": "17000"
         },
@@ -121,6 +129,10 @@
           "item_name": "iPhoneSE 12",
           "total_amount": "17000"
         },
+        "custom_fields": {
+          "item_name": "iPhoneSE 12",
+          "total_amount": "17000"
+        },
         "remind_segments": [
           {
             "name": "AAA"
@@ -146,6 +158,10 @@
         "repayment_due_at": "2022-03-18T00:00:00+09:00",
         "appendix": "test custom fields",
         "appendix_parsed": {
+          "item_name": "iPhoneSE 12",
+          "total_amount": "17000"
+        },
+        "custom_fields": {
           "item_name": "iPhoneSE 12",
           "total_amount": "17000"
         },
