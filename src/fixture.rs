@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use chrono::{Local, NaiveDate, TimeZone};
 use serde_json::json;
 
@@ -30,21 +32,30 @@ pub fn debt_request_sample_data() -> DebtRequest {
         debt_fee: Some(540),
         debt_delinquency_charge: Some(680),
         repayment_due_at: Local.with_ymd_and_hms(2022, 3, 1, 23, 59, 59).unwrap(),
-        appendix: Some(
-            r#"lease_id:xxxx lease_contract_id:xxxxx item_name:Windowsノートパソコン transaction_id:HGBVPKRN_1LCBU8F requester_name:ヤギ ナツキ total_amount:15240 elapsed_month:-2"#.into(),
-        ),
+        appendix: None,
+        custom_fields: [
+            ("lease_id".into(), "xxxx".into()),
+            ("lease_contract_id".into(), "xxxxx".into()),
+            ("item_name".into(), "Windowsノートパソコン".into()),
+            ("transaction_id".into(), "xxxx".into()),
+            ("requester_name".into(), "小山".into()),
+            ("total_amount".into(), "15000".into()),
+            ("elapsed_month".into(), "-2".into()),
+        ]
+        .into_iter()
+        .collect(),
         remind_segments: Some(vec!["y2021".into()]),
         partner: Some(Partner {
             id: "1234-5678".into(),
             name: "加盟店アメリケン".into(),
         }),
-        debt_status: Some(DebtStatusRequest{
+        debt_status: Some(DebtStatusRequest {
             debt_id: "1234-5678".into(),
             status: Some(DebtStatusVariable::Repaid),
             changed_at: Local.with_ymd_and_hms(2021, 11, 15, 12, 34, 0).unwrap(),
             expire_at: Local.with_ymd_and_hms(9999, 12, 31, 23, 59, 59).unwrap(),
             status_id: None,
-        })
+        }),
     }
 }
 
