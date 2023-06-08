@@ -47,8 +47,8 @@ mod tests {
         let req = DebtStatusRequest {
             debt_id: "1234-5678".into(),
             status: Some(DebtStatusVariable::Repaid),
-            changed_at: Local.ymd(2021, 11, 15).and_hms(12, 34, 0),
-            expire_at: Local.ymd(9999, 12, 31).and_hms(23, 59, 59),
+            changed_at: Local.with_ymd_and_hms(2021, 11, 15, 12, 34, 0).unwrap(),
+            expire_at: Local.with_ymd_and_hms(9999, 12, 31, 23, 59, 59).unwrap(),
             status_id: Some("LECTO-001".into()),
         };
 

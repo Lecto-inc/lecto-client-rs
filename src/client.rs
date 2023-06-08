@@ -228,13 +228,19 @@ mod tests {
     use mockito::Matcher;
     use serde_json::json;
 
+    fn mock_server() -> mockito::ServerGuard {
+        mockito::Server::new()
+    }
+
     #[tokio::test]
     async fn test_post_debtor() -> anyhow::Result<()> {
+        let mut server = mock_server();
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
+        let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
         let response_body = lecto_debtor_response();
-        let mock = mockito::mock("POST", "/debtors")
+        let mock = server
+            .mock("POST", "/debtors")
             .with_status(200)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
             .match_body(serde_json::to_string(&req)?.as_str())
@@ -250,14 +256,16 @@ mod tests {
 
     #[tokio::test]
     async fn test_post_debtor_validation_error() -> anyhow::Result<()> {
+        let mut server = mock_server();
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
+        let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["UnprocessableEntity"],
         }))?;
 
-        let mock = mockito::mock("POST", "/debtors")
+        let mock = server
+            .mock("POST", "/debtors")
             .with_status(422)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
             .match_body(serde_json::to_string(&req)?.as_str())
@@ -279,14 +287,16 @@ mod tests {
 
     #[tokio::test]
     async fn test_post_debtor_internal_server_error() -> anyhow::Result<()> {
+        let mut server = mock_server();
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
+        let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["InternalServerError"],
         }))?;
 
-        let mock = mockito::mock("POST", "/debtors")
+        let mock = server
+            .mock("POST", "/debtors")
             .with_status(500)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
             .match_body(serde_json::to_string(&req)?.as_str())
@@ -322,10 +332,12 @@ mod tests {
 
     #[tokio::test]
     async fn test_post_debt() -> anyhow::Result<()> {
+        let mut server = mock_server();
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1, 20);
+        let client = Client::new(api_key.into(), server.url(), 1, 20);
         let req = fixture::debt_request_sample_data();
-        let mock = mockito::mock("POST", "/debts")
+        let mock = server
+            .mock("POST", "/debts")
             .with_status(200)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
             .match_body(serde_json::to_string(&req)?.as_str())
@@ -340,14 +352,16 @@ mod tests {
 
     #[tokio::test]
     async fn test_post_debt_validation_error() -> anyhow::Result<()> {
+        let mut server = mock_server();
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
+        let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debt_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["UnprocessableEntity"],
         }))?;
 
-        let mock = mockito::mock("POST", "/debts")
+        let mock = server
+            .mock("POST", "/debts")
             .with_status(422)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
             .match_body(serde_json::to_string(&req)?.as_str())
@@ -369,10 +383,12 @@ mod tests {
 
     #[tokio::test]
     async fn test_patch_debt_status() -> anyhow::Result<()> {
+        let mut server = mock_server();
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
+        let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debt_status_request_sample_data();
-        let mock = mockito::mock("PATCH", "/debt_statuses")
+        let mock = server
+            .mock("PATCH", "/debt_statuses")
             .with_status(200)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
             .match_body(serde_json::to_string(&req)?.as_str())
@@ -387,14 +403,16 @@ mod tests {
 
     #[tokio::test]
     async fn test_patch_debt_status_validation_error() -> anyhow::Result<()> {
+        let mut server = mock_server();
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
+        let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debt_status_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["UnprocessableEntity"],
         }))?;
 
-        let mock = mockito::mock("PATCH", "/debt_statuses")
+        let mock = server
+            .mock("PATCH", "/debt_statuses")
             .with_status(422)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
             .match_body(serde_json::to_string(&req)?.as_str())
@@ -416,25 +434,27 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_reminds() -> anyhow::Result<()> {
+        let mut server = mock_server();
         let api_key = "apikey";
-        let client = Client::new(api_key.into(), mockito::server_url(), 1, 10);
+        let client = Client::new(api_key.into(), server.url(), 1, 10);
         let remind_group_id = 1;
-        let remind_at = NaiveDate::from_ymd(2022, 2, 2);
+        let remind_at = NaiveDate::from_ymd_opt(2022, 2, 2).unwrap();
         let json = std::fs::read_to_string("test-data/lecto-remind-groups-reminds.json")
             .map_err(|e| dbg!(e))?;
 
-        let mock = mockito::mock(
-            "GET",
-            format!("/remind_groups/{}/reminds", remind_group_id).as_str(),
-        )
-        .match_header("authorization", format!("Bearer {}", api_key).as_str())
-        .match_query(Matcher::AllOf(vec![
-            Matcher::UrlEncoded("remind_at".into(), "2022-02-02".into()),
-            Matcher::UrlEncoded("ignore_remind_group_status".into(), "true".into()),
-        ]))
-        .with_status(200)
-        .with_body(json)
-        .create();
+        let mock = server
+            .mock(
+                "GET",
+                format!("/remind_groups/{}/reminds", remind_group_id).as_str(),
+            )
+            .match_header("authorization", format!("Bearer {}", api_key).as_str())
+            .match_query(Matcher::AllOf(vec![
+                Matcher::UrlEncoded("remind_at".into(), "2022-02-02".into()),
+                Matcher::UrlEncoded("ignore_remind_group_status".into(), "true".into()),
+            ]))
+            .with_status(200)
+            .with_body(json)
+            .create();
 
         let _ = client.get_reminds(remind_group_id, remind_at).await?;
 

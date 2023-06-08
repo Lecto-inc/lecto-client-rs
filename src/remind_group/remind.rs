@@ -69,6 +69,10 @@ mod tests {
                             ("item_name".into(), "iPhoneSE 12".into()),
                             ("total_amount".into(), "17000".into()),
                         ].into_iter().collect(),
+                        custom_fields:  [
+                            ("item_name".into(), "iPhoneSE 12".into()),
+                            ("total_amount".into(), "17000".into()),
+                        ].into_iter().collect(),
                         remind_segments: vec![Segment { name: "AAA".into() }],
                         partner: None,
                         debt_status: DebtStatus{
@@ -91,6 +95,10 @@ mod tests {
                         repayment_due_at: "2022-03-18T00:00:00+09:00".parse().unwrap(),
                         appendix: "test custom fields".into(),
                         appendix_parsed: [
+                            ("item_name".into(), "iPhoneSE 12".into()),
+                            ("total_amount".into(), "17000".into()),
+                        ].into_iter().collect(),
+                        custom_fields:  [
                             ("item_name".into(), "iPhoneSE 12".into()),
                             ("total_amount".into(), "17000".into()),
                         ].into_iter().collect(),

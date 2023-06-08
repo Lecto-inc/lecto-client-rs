@@ -81,7 +81,7 @@ mod tests {
             debtor_id: "test-external-id".into(),
             name: "名前".into(),
             name_kana: "カナ".into(),
-            birth_date: Some(NaiveDate::from_ymd(1999, 1, 1)),
+            birth_date: Some(NaiveDate::from_ymd_opt(1999, 1, 1).unwrap()),
             gender: Gender::Male,
             email: "sample@example.com".into(),
             address: "東京都xx 区xx町x-x-x".into(),
