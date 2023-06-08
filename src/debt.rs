@@ -64,8 +64,10 @@ fn ordered_map<S>(value: &HashMap<String, String>, serializer: S) -> Result<S::O
 where
     S: Serializer,
 {
-    let ordered: BTreeMap<_, _> = value.iter().collect();
-    ordered.serialize(serializer)
+    value
+        .iter()
+        .collect::<BTreeMap<_, _>>()
+        .serialize(serializer)
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
