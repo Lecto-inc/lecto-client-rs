@@ -64,11 +64,6 @@ mod tests {
                         debt_fee: Some(100),
                         debt_delinquency_charge: Some(500),
                         repayment_due_at: "2022-03-17T00:00:00+09:00".parse().unwrap(),
-                        appendix: "test custom fields".into(),
-                        appendix_parsed: [
-                            ("item_name".into(), "iPhoneSE 12".into()),
-                            ("total_amount".into(), "17000".into()),
-                        ].into_iter().collect(),
                         custom_fields:  [
                             ("item_name".into(), "iPhoneSE 12".into()),
                             ("total_amount".into(), "17000".into()),
@@ -93,11 +88,6 @@ mod tests {
                         debt_fee: Some(100),
                         debt_delinquency_charge: Some(500),
                         repayment_due_at: "2022-03-18T00:00:00+09:00".parse().unwrap(),
-                        appendix: "test custom fields".into(),
-                        appendix_parsed: [
-                            ("item_name".into(), "iPhoneSE 12".into()),
-                            ("total_amount".into(), "17000".into()),
-                        ].into_iter().collect(),
                         custom_fields:  [
                             ("item_name".into(), "iPhoneSE 12".into()),
                             ("total_amount".into(), "17000".into()),

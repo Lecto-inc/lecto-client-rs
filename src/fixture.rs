@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use chrono::{Local, NaiveDate, TimeZone};
 use serde_json::json;
 
@@ -32,7 +30,6 @@ pub fn debt_request_sample_data() -> DebtRequest {
         debt_fee: Some(540),
         debt_delinquency_charge: Some(680),
         repayment_due_at: Local.with_ymd_and_hms(2022, 3, 1, 23, 59, 59).unwrap(),
-        appendix: None,
         custom_fields: [
             ("lease_id".into(), "xxxx".into()),
             ("lease_contract_id".into(), "xxxxx".into()),
@@ -104,7 +101,15 @@ pub fn lecto_debt_response() -> serde_json::Value {
         "debt_fee": 0,
         "debt_delinquency_charge": 10,
         "repayment_due_at": "2021-01-01T10:00:00+09:00",
-        "appendix": "aaaaa",
+        "appendix": "deprecated",
+        "appendix_parsed": {
+            "item_name": "iPhoneSE 12",
+            "total_amount": "17000",
+        },
+        "custom_fields": {
+            "item_name": "iPhoneSE 12",
+            "total_amount": "17000",
+        },
         "remind_segments": [
             { "name": "seg-1" },
             { "name": "seg-2" },
