@@ -1,7 +1,7 @@
 use chrono::{Local, NaiveDate, TimeZone};
 use serde_json::json;
 
-use crate::debt::{DebtRequest, Partner};
+use crate::debt::{DebtRequest, PartnerRequest};
 use crate::debt_status::{DebtStatusRequest, DebtStatusVariable};
 use crate::debtor::{DebtorRequest, Gender};
 
@@ -42,9 +42,9 @@ pub fn debt_request_sample_data() -> DebtRequest {
         .into_iter()
         .collect(),
         remind_segments: Some(vec!["y2021".into()]),
-        partner: Some(Partner {
+        partner: Some(PartnerRequest {
             id: "1234-5678".into(),
-            name: "加盟店アメリケン".into(),
+            name: Some("加盟店アメリケン".into()),
         }),
         debt_status: Some(DebtStatusRequest {
             debt_id: "1234-5678".into(),

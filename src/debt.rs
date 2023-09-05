@@ -47,7 +47,7 @@ pub struct DebtRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub remind_segments: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub partner: Option<Partner>,
+    pub partner: Option<PartnerRequest>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub debt_status: Option<DebtStatusRequest>,
 }
@@ -60,6 +60,12 @@ where
         .iter()
         .collect::<BTreeMap<_, _>>()
         .serialize(serializer)
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct PartnerRequest {
+    pub id: String,
+    pub name: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -93,9 +99,9 @@ mod tests {
             .into_iter()
             .collect(),
             remind_segments: Some(vec!["y2021".into()]),
-            partner: Some(Partner {
+            partner: Some(PartnerRequest {
                 id: "1234-5678".into(),
-                name: "加盟店アメリケン".into(),
+                name: Some("加盟店アメリケン".into()),
             }),
             debt_status: Some(DebtStatusRequest {
                 debt_id: "1234-5678".into(),
