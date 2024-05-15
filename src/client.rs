@@ -228,13 +228,13 @@ mod tests {
     use mockito::Matcher;
     use serde_json::json;
 
-    fn mock_server() -> mockito::ServerGuard {
-        mockito::Server::new()
+    async fn mock_server() -> mockito::ServerGuard {
+        mockito::Server::new_async().await
     }
 
     #[tokio::test]
     async fn test_post_debtor() -> anyhow::Result<()> {
-        let mut server = mock_server();
+        let mut server = mock_server().await;
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
@@ -256,7 +256,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_post_debtor_validation_error() -> anyhow::Result<()> {
-        let mut server = mock_server();
+        let mut server = mock_server().await;
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
@@ -287,7 +287,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_post_debtor_internal_server_error() -> anyhow::Result<()> {
-        let mut server = mock_server();
+        let mut server = mock_server().await;
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
@@ -332,7 +332,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_post_debt() -> anyhow::Result<()> {
-        let mut server = mock_server();
+        let mut server = mock_server().await;
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 20);
         let req = fixture::debt_request_sample_data();
@@ -352,7 +352,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_post_debt_validation_error() -> anyhow::Result<()> {
-        let mut server = mock_server();
+        let mut server = mock_server().await;
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debt_request_sample_data();
@@ -383,7 +383,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_patch_debt_status() -> anyhow::Result<()> {
-        let mut server = mock_server();
+        let mut server = mock_server().await;
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debt_status_request_sample_data();
@@ -403,7 +403,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_patch_debt_status_validation_error() -> anyhow::Result<()> {
-        let mut server = mock_server();
+        let mut server = mock_server().await;
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debt_status_request_sample_data();
@@ -434,7 +434,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_reminds() -> anyhow::Result<()> {
-        let mut server = mock_server();
+        let mut server = mock_server().await;
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let remind_group_id = 1;
