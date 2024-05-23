@@ -3,7 +3,7 @@ use serde_json::json;
 
 use crate::debt::{DebtRequest, PartnerRequest};
 use crate::debt_status::{DebtStatusRequest, DebtStatusVariable};
-use crate::debtor::{DebtorRequest, Gender};
+use crate::debtor::{DebtorRawRequest, DebtorRequest, Gender};
 
 pub fn debtor_request_sample_data() -> DebtorRequest {
     DebtorRequest {
@@ -19,6 +19,10 @@ pub fn debtor_request_sample_data() -> DebtorRequest {
         phone_number: "0312345678".into(),
         mobile_number: "09012345678".into(),
     }
+}
+
+pub fn debtor_raw_request_sample_data() -> DebtorRawRequest {
+    debtor_request_sample_data().into()
 }
 
 pub fn debt_request_sample_data() -> DebtRequest {
@@ -81,7 +85,7 @@ pub fn lecto_debtor_response() -> serde_json::Value {
         },
         "address": {
             "address": "東京都xx区xx町x-x-x",
-            "kyc_done": true,
+            "kyc_done": 1,
             "postal_code": "3336666",
         },
         "phone_number": {

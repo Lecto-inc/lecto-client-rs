@@ -6,10 +6,10 @@ use reqwest::header::HeaderMap;
 use reqwest::{Response, StatusCode};
 use serde::de::DeserializeOwned;
 
+use crate::debtor::{DebtorRawRequest, DebtorResponse};
+use crate::remind_group::remind::{Remind, RemindResponse};
 use crate::util::join_url;
 use crate::{Debt, DebtRequest, DebtStatus, DebtStatusRequest, Debtor, DebtorRequest};
-
-use super::remind_group::remind::Remind;
 
 /// TODO: debtorでもdebtsでも使えるようにrequest,responseをStringにしているがDebtor以外の型ができたタイミングでGenericsにしたほうがいい気がする
 #[derive(thiserror::Error, Debug)]
@@ -59,17 +59,26 @@ impl Client {
         let headers = self.common_headers()?;
         let url = join_url(&self.base_url, &["debtors"])?;
 
+        let raw_req = DebtorRawRequest::from(req.clone());
         let res = retry(
             || {
                 let url = url.clone();
                 let headers = headers.clone();
-                self.client.post(url).json(&req).headers(headers).send()
+                self.client.post(url).json(&raw_req).headers(headers).send()
             },
             self.max_retry,
         )
         .await?;
 
-        Self::handle_response(Some(req), res).await
+        let parsed_res = Self::handle_response(Some(req), res).await;
+
+        if parsed_res.is_ok() {
+            let res_body: DebtorResponse = parsed_res.unwrap();
+            let converted: Debtor = Debtor::from(res_body);
+            Ok(converted)
+        } else {
+            anyhow::Result::Err(parsed_res.err().unwrap())
+        }
     }
 
     pub async fn post_debt(&self, req: DebtRequest) -> anyhow::Result<Debt> {
@@ -138,7 +147,14 @@ impl Client {
         )
         .await?;
 
-        Self::handle_response(None as Option<()>, res).await
+        let parsed_res = Self::handle_response(None as Option<()>, res).await;
+
+        if parsed_res.is_ok() {
+            let res_body: Vec<RemindResponse> = parsed_res.unwrap();
+            return Ok(res_body.iter().map(|x| Remind::from(x.clone())).collect());
+        } else {
+            anyhow::Result::Err(parsed_res.err().unwrap())
+        }
     }
 
     fn common_headers(&self) -> anyhow::Result<HeaderMap> {
@@ -238,12 +254,13 @@ mod tests {
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
+        let raw_req = fixture::debtor_raw_request_sample_data();
         let response_body = lecto_debtor_response();
         let mock = server
             .mock("POST", "/debtors")
             .with_status(200)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
-            .match_body(serde_json::to_string(&req)?.as_str())
+            .match_body(serde_json::to_string(&raw_req)?.as_str())
             .with_body(serde_json::to_string(&response_body)?.as_str())
             .create();
 
@@ -260,6 +277,7 @@ mod tests {
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
+        let raw_req = fixture::debtor_raw_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["UnprocessableEntity"],
         }))?;
@@ -268,7 +286,7 @@ mod tests {
             .mock("POST", "/debtors")
             .with_status(422)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
-            .match_body(serde_json::to_string(&req)?.as_str())
+            .match_body(serde_json::to_string(&raw_req)?.as_str())
             .with_body(&response_body)
             .create();
 
@@ -291,6 +309,7 @@ mod tests {
         let api_key = "apikey";
         let client = Client::new(api_key.into(), server.url(), 1, 10);
         let req = fixture::debtor_request_sample_data();
+        let raw_req = fixture::debtor_raw_request_sample_data();
         let response_body = serde_json::to_string(&json!({
             "errors": ["InternalServerError"],
         }))?;
@@ -299,7 +318,7 @@ mod tests {
             .mock("POST", "/debtors")
             .with_status(500)
             .match_header("authorization", format!("Bearer {}", api_key).as_str())
-            .match_body(serde_json::to_string(&req)?.as_str())
+            .match_body(serde_json::to_string(&raw_req)?.as_str())
             .with_body(&response_body)
             .create();
 

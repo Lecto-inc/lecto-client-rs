@@ -1,5 +1,7 @@
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
+use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::convert::From;
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Eq, Hash)]
 pub struct Debtor {
@@ -53,6 +55,85 @@ pub struct DebtorRequest {
     pub mobile_number: String,
 }
 
+// kyc_doneがintegerかboolかの違い
+// 内部で使うための物で、外部には公開しない
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
+pub struct DebtorRawRequest {
+    pub debtor_id: String,
+    pub name: String,
+    pub name_kana: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub birth_date: Option<NaiveDate>,
+    pub gender: Gender,
+    pub email: String,
+    pub address: String,
+    pub kyc_done: KycDone,
+    pub postal_code: String,
+    pub phone_number: String,
+    pub mobile_number: String,
+}
+impl From<DebtorRequest> for DebtorRawRequest {
+    fn from(item: DebtorRequest) -> Self {
+        Self {
+            debtor_id: item.debtor_id,
+            name: item.name,
+            name_kana: item.name_kana,
+            birth_date: item.birth_date,
+            gender: item.gender,
+            email: item.email,
+            address: item.address,
+            kyc_done: if item.kyc_done {
+                KycDone::Done
+            } else {
+                KycDone::NotDone
+            },
+            postal_code: item.postal_code,
+            phone_number: item.phone_number,
+            mobile_number: item.mobile_number,
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Eq, Hash)]
+pub struct DebtorAddressResponse {
+    pub address: String,
+    pub kyc_done: KycDone,
+    pub postal_code: Option<String>,
+}
+impl From<DebtorAddressResponse> for DebtorAddress {
+    fn from(item: DebtorAddressResponse) -> Self {
+        Self {
+            address: item.address,
+            kyc_done: item.kyc_done == KycDone::Done,
+            postal_code: item.postal_code,
+        }
+    }
+}
+
+// kyc_doneがintegerかboolかの違い
+#[derive(Debug, Clone, PartialEq, Deserialize, Eq, Hash)]
+pub struct DebtorResponse {
+    pub id: u64,
+    pub debtor_id: String,
+    pub basic_information: DebtorBasicInformation,
+    pub email: DebtorEmail,
+    pub address: DebtorAddressResponse,
+    pub phone_number: DebtorPhoneNumber,
+}
+
+impl From<DebtorResponse> for Debtor {
+    fn from(item: DebtorResponse) -> Self {
+        Self {
+            id: item.id,
+            debtor_id: item.debtor_id,
+            basic_information: item.basic_information,
+            email: item.email,
+            address: DebtorAddress::from(item.address),
+            phone_number: item.phone_number,
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Gender {
@@ -68,6 +149,15 @@ impl Default for Gender {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Deserialize_repr, Serialize_repr, Eq, Hash, Default)]
+#[repr(u8)]
+pub enum KycDone {
+    Done = 1,
+
+    #[default]
+    NotDone = 0,
+}
+
 #[cfg(test)]
 mod tests {
     use crate::fixture::lecto_debtor_response;
@@ -76,7 +166,7 @@ mod tests {
     use pretty_assertions::assert_eq;
 
     #[test]
-    fn test_serialize_reponse() -> anyhow::Result<()> {
+    fn test_serialize_request() -> anyhow::Result<()> {
         let req = DebtorRequest {
             debtor_id: "test-external-id".into(),
             name: "名前".into(),
@@ -103,7 +193,7 @@ mod tests {
     #[test]
     fn test_deserialize_response() -> anyhow::Result<()> {
         let res_json = serde_json::to_string(&lecto_debtor_response())?;
-        let _debtor: Debtor = serde_json::from_str(&res_json)?;
+        let _debtor: DebtorResponse = serde_json::from_str(&res_json)?;
         Ok(())
     }
 }
