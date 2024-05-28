@@ -166,8 +166,8 @@ mod tests {
     use pretty_assertions::assert_eq;
 
     #[test]
-    fn test_serialize_request() -> anyhow::Result<()> {
-        let req = DebtorRequest {
+    fn test_serialize_raw_request() -> anyhow::Result<()> {
+        let req = DebtorRawRequest {
             debtor_id: "test-external-id".into(),
             name: "名前".into(),
             name_kana: "カナ".into(),
@@ -175,7 +175,7 @@ mod tests {
             gender: Gender::Male,
             email: "sample@example.com".into(),
             address: "東京都xx 区xx町x-x-x".into(),
-            kyc_done: true,
+            kyc_done: KycDone::Done,
             postal_code: "3336666".into(),
             phone_number: "0312345678".into(),
             mobile_number: "09012345678".into(),
@@ -184,7 +184,7 @@ mod tests {
         let serialized = serde_json::to_string(&req)?;
         assert_eq!(
             serialized,
-            r#"{"debtor_id":"test-external-id","name":"名前","name_kana":"カナ","birth_date":"1999-01-01","gender":"male","email":"sample@example.com","address":"東京都xx 区xx町x-x-x","kyc_done":true,"postal_code":"3336666","phone_number":"0312345678","mobile_number":"09012345678"}"#
+            r#"{"debtor_id":"test-external-id","name":"名前","name_kana":"カナ","birth_date":"1999-01-01","gender":"male","email":"sample@example.com","address":"東京都xx 区xx町x-x-x","kyc_done":1,"postal_code":"3336666","phone_number":"0312345678","mobile_number":"09012345678"}"#
         );
 
         Ok(())
