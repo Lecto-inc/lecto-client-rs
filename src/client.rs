@@ -70,15 +70,9 @@ impl Client {
         )
         .await?;
 
-        let parsed_res = Self::handle_response(Some(req), res).await;
-
-        if parsed_res.is_ok() {
-            let res_body: DebtorResponse = parsed_res.unwrap();
-            let converted: Debtor = Debtor::from(res_body);
-            Ok(converted)
-        } else {
-            anyhow::Result::Err(parsed_res.err().unwrap())
-        }
+        Self::handle_response(Some(req), res)
+            .await
+            .map(|v: DebtorResponse| Debtor::from(v))
     }
 
     pub async fn post_debt(&self, req: DebtRequest) -> anyhow::Result<Debt> {
@@ -147,14 +141,9 @@ impl Client {
         )
         .await?;
 
-        let parsed_res = Self::handle_response(None as Option<()>, res).await;
-
-        if parsed_res.is_ok() {
-            let res_body: Vec<RemindResponse> = parsed_res.unwrap();
-            return Ok(res_body.iter().map(|x| Remind::from(x.clone())).collect());
-        } else {
-            anyhow::Result::Err(parsed_res.err().unwrap())
-        }
+        Self::handle_response(None as Option<()>, res)
+            .await
+            .map(|v: Vec<RemindResponse>| v.iter().map(|x| Remind::from(x.clone())).collect())
     }
 
     fn common_headers(&self) -> anyhow::Result<HeaderMap> {
