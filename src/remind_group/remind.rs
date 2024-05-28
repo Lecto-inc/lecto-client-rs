@@ -1,12 +1,31 @@
 use serde::Deserialize;
 
-use crate::{debt::Debt, debtor::Debtor};
+use crate::{
+    debt::Debt,
+    debtor::{Debtor, DebtorResponse},
+};
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct Remind {
     pub label: String,
     pub debtor: Debtor,
     pub debts: Vec<Debt>,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize)]
+pub struct RemindResponse {
+    pub label: String,
+    pub debtor: DebtorResponse,
+    pub debts: Vec<Debt>,
+}
+impl From<RemindResponse> for Remind {
+    fn from(item: RemindResponse) -> Self {
+        Self {
+            label: item.label,
+            debtor: Debtor::from(item.debtor),
+            debts: item.debts,
+        }
+    }
 }
 
 #[cfg(test)]
@@ -16,7 +35,9 @@ mod tests {
 
     use crate::{
         debt::Segment,
-        debtor::{DebtorAddress, DebtorBasicInformation, DebtorEmail, DebtorPhoneNumber, Gender},
+        debtor::{
+            DebtorAddressResponse, DebtorBasicInformation, DebtorEmail, DebtorPhoneNumber, Gender,
+        },
         DebtStatus, DebtStatusVariable,
     };
 
@@ -27,12 +48,12 @@ mod tests {
         let json = std::fs::read_to_string("test-data/lecto-remind-groups-reminds.json")
             .map_err(|e| dbg!(e))?;
 
-        let data: Vec<Remind> = serde_json::from_str(&json).map_err(|e| dbg!(e))?;
+        let data: Vec<RemindResponse> = serde_json::from_str(&json).map_err(|e| dbg!(e))?;
 
         assert_matches!(&data[..], [first, ..] => {
-            assert_eq!(first, &Remind {
+            assert_eq!(first, &RemindResponse {
                 label: "test external id3---2022-03".into(),
-                debtor: Debtor {
+                debtor: DebtorResponse {
                     id: 38553,
                     debtor_id: "test external id3".into(),
                     basic_information: DebtorBasicInformation {
@@ -44,9 +65,9 @@ mod tests {
                     email: DebtorEmail {
                         email: "sample@example.com".into()
                     },
-                    address: DebtorAddress {
+                    address: DebtorAddressResponse {
                         address: "東京都xx区xx町x-x-x".into(),
-                        kyc_done: true,
+                        kyc_done: crate::debtor::KycDone::Done,
                         postal_code: Some("3336666".into()),
                     },
                     phone_number: DebtorPhoneNumber {

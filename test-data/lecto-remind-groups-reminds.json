@@ -15,7 +15,7 @@
       },
       "address": {
         "address": "東京都xx区xx町x-x-x",
-        "kyc_done": true,
+        "kyc_done": 1,
         "postal_code": "3336666"
       },
       "phone_number": {
@@ -106,7 +106,7 @@
       },
       "address": {
         "address": "東京都xx区xx町x-x-x",
-        "kyc_done": true,
+        "kyc_done": 1,
         "postal_code": "3336666"
       },
       "phone_number": {
@@ -182,4 +182,3 @@
     ]
   }
 ]
-
