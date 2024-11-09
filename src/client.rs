@@ -208,9 +208,18 @@ where
 
         attempts += 1;
         match res {
-            Ok(x) => {
-                return Ok(x);
-            }
+            Ok(x) => match x.status() {
+                StatusCode::OK | StatusCode::UNPROCESSABLE_ENTITY | StatusCode::BAD_REQUEST => {
+                    return Ok(x);
+                }
+                _ => {
+                    log::error!(
+                        "👻 Reqwest Error! will retry attempts: {}, Error: {:?}",
+                        attempts,
+                        x,
+                    );
+                }
+            },
             Err(e) => {
                 log::error!(
                     "👻 Reqwest Error! will retry attempts: {}, Error: {:?}",
