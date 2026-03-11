@@ -270,6 +270,31 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn test_post_debtor_with_email_contacts() -> anyhow::Result<()> {
+        let mut server = mock_server().await;
+        let api_key = "apikey";
+        let client = Client::new(api_key.into(), server.url(), 1, 10);
+        let req = fixture::debtor_request_with_email_contacts_sample_data();
+        let raw_req = fixture::debtor_raw_request_with_email_contacts_sample_data();
+        let response_body = fixture::lecto_debtor_with_email_contacts_response();
+        let mock = server
+            .mock("POST", "/debtors")
+            .with_status(200)
+            .match_header("authorization", format!("Bearer {}", api_key).as_str())
+            .match_body(serde_json::to_string(&raw_req)?.as_str())
+            .with_body(serde_json::to_string(&response_body)?.as_str())
+            .create();
+
+        let res = client.post_debtor(req).await?;
+        assert_eq!(res.email_contacts.len(), 2);
+        assert_eq!(res.email_contacts[0].email, "main@example.com");
+        assert_eq!(res.email_contacts[1].email, "sub@example.com");
+        mock.assert();
+
+        Ok(())
+    }
+
+    #[tokio::test]
     async fn test_post_debtor_validation_error() -> anyhow::Result<()> {
         let mut server = mock_server().await;
         let api_key = "apikey";

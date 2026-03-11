@@ -9,6 +9,8 @@ pub struct Debtor {
     pub debtor_id: String,
     pub basic_information: DebtorBasicInformation,
     pub email: DebtorEmail,
+    #[serde(default)]
+    pub email_contacts: Vec<EmailContact>,
     pub address: DebtorAddress,
     pub phone_number: DebtorPhoneNumber,
 }
@@ -24,6 +26,22 @@ pub struct DebtorBasicInformation {
 #[derive(Debug, Clone, PartialEq, Deserialize, Eq, Hash)]
 pub struct DebtorEmail {
     pub email: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Eq, Hash)]
+pub struct EmailContact {
+    pub email: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    pub recipient_kind: RecipientKind,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Eq, Hash)]
+#[serde(rename_all = "snake_case")]
+pub enum RecipientKind {
+    To,
+    Cc,
+    Bcc,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Eq, Hash)]
@@ -48,6 +66,8 @@ pub struct DebtorRequest {
     pub birth_date: Option<NaiveDate>,
     pub gender: Gender,
     pub email: String,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub email_contacts: Vec<EmailContact>,
     pub address: String,
     pub kyc_done: bool,
     pub postal_code: String,
@@ -66,6 +86,8 @@ pub struct DebtorRawRequest {
     pub birth_date: Option<NaiveDate>,
     pub gender: Gender,
     pub email: String,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub email_contacts: Vec<EmailContact>,
     pub address: String,
     pub kyc_done: KycDone,
     pub postal_code: String,
@@ -81,6 +103,7 @@ impl From<DebtorRequest> for DebtorRawRequest {
             birth_date: item.birth_date,
             gender: item.gender,
             email: item.email,
+            email_contacts: item.email_contacts,
             address: item.address,
             kyc_done: if item.kyc_done {
                 KycDone::Done
@@ -117,6 +140,8 @@ pub struct DebtorResponse {
     pub debtor_id: String,
     pub basic_information: DebtorBasicInformation,
     pub email: DebtorEmail,
+    #[serde(default)]
+    pub email_contacts: Vec<EmailContact>,
     pub address: DebtorAddressResponse,
     pub phone_number: DebtorPhoneNumber,
 }
@@ -128,6 +153,7 @@ impl From<DebtorResponse> for Debtor {
             debtor_id: item.debtor_id,
             basic_information: item.basic_information,
             email: item.email,
+            email_contacts: item.email_contacts,
             address: DebtorAddress::from(item.address),
             phone_number: item.phone_number,
         }
@@ -169,6 +195,7 @@ mod tests {
             birth_date: Some(NaiveDate::from_ymd_opt(1999, 1, 1).unwrap()),
             gender: Gender::Male,
             email: "sample@example.com".into(),
+            email_contacts: vec![],
             address: "東京都xx 区xx町x-x-x".into(),
             kyc_done: KycDone::Done,
             postal_code: "3336666".into(),
@@ -188,7 +215,36 @@ mod tests {
     #[test]
     fn test_deserialize_response() -> anyhow::Result<()> {
         let res_json = serde_json::to_string(&lecto_debtor_response())?;
-        let _debtor: DebtorResponse = serde_json::from_str(&res_json)?;
+        let debtor: DebtorResponse = serde_json::from_str(&res_json)?;
+        assert!(debtor.email_contacts.is_empty());
+        Ok(())
+    }
+
+    #[test]
+    fn test_serialize_raw_request_with_email_contacts() -> anyhow::Result<()> {
+        let req = crate::fixture::debtor_raw_request_with_email_contacts_sample_data();
+        let serialized = serde_json::to_string(&req)?;
+        let value: serde_json::Value = serde_json::from_str(&serialized)?;
+        let contacts = value["email_contacts"].as_array().unwrap();
+        assert_eq!(contacts.len(), 2);
+        assert_eq!(contacts[0]["email"], "main@example.com");
+        assert_eq!(contacts[0]["recipient_kind"], "to");
+        assert_eq!(contacts[1]["email"], "sub@example.com");
+        assert_eq!(contacts[1]["recipient_kind"], "cc");
+        Ok(())
+    }
+
+    #[test]
+    fn test_deserialize_response_with_email_contacts() -> anyhow::Result<()> {
+        let res_json =
+            serde_json::to_string(&crate::fixture::lecto_debtor_with_email_contacts_response())?;
+        let debtor: DebtorResponse = serde_json::from_str(&res_json)?;
+        assert_eq!(debtor.email_contacts.len(), 2);
+        assert_eq!(debtor.email_contacts[0].email, "main@example.com");
+        assert_eq!(debtor.email_contacts[0].name, Some("主担当".into()));
+        assert_eq!(debtor.email_contacts[0].recipient_kind, RecipientKind::To);
+        assert_eq!(debtor.email_contacts[1].email, "sub@example.com");
+        assert_eq!(debtor.email_contacts[1].recipient_kind, RecipientKind::Cc);
         Ok(())
     }
 }

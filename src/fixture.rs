@@ -3,7 +3,7 @@ use serde_json::json;
 
 use crate::debt::{DebtRequest, PartnerRequest};
 use crate::debt_status::{DebtStatusRequest, DebtStatusVariable};
-use crate::debtor::{DebtorRawRequest, DebtorRequest, Gender};
+use crate::debtor::{DebtorRawRequest, DebtorRequest, EmailContact, Gender, RecipientKind};
 
 pub fn debtor_request_sample_data() -> DebtorRequest {
     DebtorRequest {
@@ -13,6 +13,7 @@ pub fn debtor_request_sample_data() -> DebtorRequest {
         birth_date: Some(NaiveDate::from_ymd_opt(1999, 1, 1).unwrap()),
         gender: Gender::Male,
         email: "sample@example.com".into(),
+        email_contacts: vec![],
         address: "東京都xx 区xx町x-x-x".into(),
         kyc_done: true,
         postal_code: "3336666".into(),
@@ -21,8 +22,30 @@ pub fn debtor_request_sample_data() -> DebtorRequest {
     }
 }
 
+pub fn debtor_request_with_email_contacts_sample_data() -> DebtorRequest {
+    DebtorRequest {
+        email_contacts: vec![
+            EmailContact {
+                email: "main@example.com".into(),
+                name: Some("主担当".into()),
+                recipient_kind: RecipientKind::To,
+            },
+            EmailContact {
+                email: "sub@example.com".into(),
+                name: Some("副担当".into()),
+                recipient_kind: RecipientKind::Cc,
+            },
+        ],
+        ..debtor_request_sample_data()
+    }
+}
+
 pub fn debtor_raw_request_sample_data() -> DebtorRawRequest {
     debtor_request_sample_data().into()
+}
+
+pub fn debtor_raw_request_with_email_contacts_sample_data() -> DebtorRawRequest {
+    debtor_request_with_email_contacts_sample_data().into()
 }
 
 pub fn debt_request_sample_data() -> DebtRequest {
@@ -83,6 +106,43 @@ pub fn lecto_debtor_response() -> serde_json::Value {
         "email": {
             "email": "sample@example.com",
         },
+        "address": {
+            "address": "東京都xx区xx町x-x-x",
+            "kyc_done": 1,
+            "postal_code": "3336666",
+        },
+        "phone_number": {
+            "phone_number": "0312345678",
+            "mobile_number": "09012345678",
+        },
+    })
+}
+
+pub fn lecto_debtor_with_email_contacts_response() -> serde_json::Value {
+    json!({
+        "id": 111,
+        "debtor_id": "DEBTOR_111",
+        "basic_information": {
+            "name": "name",
+            "name_kana": "name kana",
+            "birth_date": "1999-01-01",
+            "gender": "male",
+        },
+        "email": {
+            "email": "sample@example.com",
+        },
+        "email_contacts": [
+            {
+                "email": "main@example.com",
+                "name": "主担当",
+                "recipient_kind": "to",
+            },
+            {
+                "email": "sub@example.com",
+                "name": "副担当",
+                "recipient_kind": "cc",
+            },
+        ],
         "address": {
             "address": "東京都xx区xx町x-x-x",
             "kyc_done": 1,
