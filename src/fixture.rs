@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 use chrono::{Local, NaiveDate, TimeZone};
 use serde_json::json;
 

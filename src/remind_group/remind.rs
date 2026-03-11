@@ -29,6 +29,7 @@ impl From<RemindResponse> for Remind {
 }
 
 #[cfg(test)]
+#[allow(deprecated)]
 mod tests {
     use assert_matches::assert_matches;
     use pretty_assertions::assert_eq;

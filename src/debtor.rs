@@ -8,6 +8,7 @@ pub struct Debtor {
     pub id: u64,
     pub debtor_id: String,
     pub basic_information: DebtorBasicInformation,
+    #[deprecated(note = "use email_contacts instead")]
     pub email: DebtorEmail,
     #[serde(default)]
     pub email_contacts: Vec<EmailContact>,
@@ -65,6 +66,7 @@ pub struct DebtorRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub birth_date: Option<NaiveDate>,
     pub gender: Gender,
+    #[deprecated(note = "use email_contacts instead")]
     pub email: String,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub email_contacts: Vec<EmailContact>,
@@ -85,6 +87,7 @@ pub struct DebtorRawRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub birth_date: Option<NaiveDate>,
     pub gender: Gender,
+    #[deprecated(note = "use email_contacts instead")]
     pub email: String,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub email_contacts: Vec<EmailContact>,
@@ -94,6 +97,7 @@ pub struct DebtorRawRequest {
     pub phone_number: String,
     pub mobile_number: String,
 }
+#[allow(deprecated)]
 impl From<DebtorRequest> for DebtorRawRequest {
     fn from(item: DebtorRequest) -> Self {
         Self {
@@ -139,6 +143,7 @@ pub struct DebtorResponse {
     pub id: u64,
     pub debtor_id: String,
     pub basic_information: DebtorBasicInformation,
+    #[deprecated(note = "use email_contacts instead")]
     pub email: DebtorEmail,
     #[serde(default)]
     pub email_contacts: Vec<EmailContact>,
@@ -146,6 +151,7 @@ pub struct DebtorResponse {
     pub phone_number: DebtorPhoneNumber,
 }
 
+#[allow(deprecated)]
 impl From<DebtorResponse> for Debtor {
     fn from(item: DebtorResponse) -> Self {
         Self {
@@ -180,6 +186,7 @@ pub enum KycDone {
 }
 
 #[cfg(test)]
+#[allow(deprecated)]
 mod tests {
     use crate::fixture::lecto_debtor_response;
 
