@@ -14,7 +14,7 @@ pub fn debtor_request_sample_data() -> DebtorRequest {
         name_kana: "カナ".into(),
         birth_date: Some(NaiveDate::from_ymd_opt(1999, 1, 1).unwrap()),
         gender: Gender::Male,
-        email: "sample@example.com".into(),
+        email: Some("sample@example.com".into()),
         email_contacts: vec![],
         address: "東京都xx 区xx町x-x-x".into(),
         kyc_done: true,
