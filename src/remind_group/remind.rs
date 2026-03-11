@@ -63,9 +63,9 @@ mod tests {
                         birth_date: None,
                         gender: Gender::None,
                     },
-                    email: DebtorEmail {
+                    email: Some(DebtorEmail {
                         email: "sample@example.com".into()
-                    },
+                    }),
                     email_contacts: vec![],
                     address: DebtorAddressResponse {
                         address: "東京都xx区xx町x-x-x".into(),
