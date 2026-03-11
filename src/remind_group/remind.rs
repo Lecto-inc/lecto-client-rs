@@ -29,16 +29,17 @@ impl From<RemindResponse> for Remind {
 }
 
 #[cfg(test)]
+#[allow(deprecated)]
 mod tests {
     use assert_matches::assert_matches;
     use pretty_assertions::assert_eq;
 
     use crate::{
+        DebtStatus, DebtStatusVariable,
         debt::Segment,
         debtor::{
             DebtorAddressResponse, DebtorBasicInformation, DebtorEmail, DebtorPhoneNumber, Gender,
         },
-        DebtStatus, DebtStatusVariable,
     };
 
     use super::*;
@@ -65,6 +66,7 @@ mod tests {
                     email: DebtorEmail {
                         email: "sample@example.com".into()
                     },
+                    email_contacts: vec![],
                     address: DebtorAddressResponse {
                         address: "東京都xx区xx町x-x-x".into(),
                         kyc_done: crate::debtor::KycDone::Done,
