@@ -76,7 +76,7 @@ pub struct Partner {
 
 #[cfg(test)]
 mod tests {
-    use crate::{fixture::lecto_debt_response, DebtStatusVariable};
+    use crate::{DebtStatusVariable, fixture::lecto_debt_response};
 
     use super::*;
     use chrono::TimeZone;

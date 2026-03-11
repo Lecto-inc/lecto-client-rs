@@ -34,11 +34,11 @@ mod tests {
     use pretty_assertions::assert_eq;
 
     use crate::{
+        DebtStatus, DebtStatusVariable,
         debt::Segment,
         debtor::{
             DebtorAddressResponse, DebtorBasicInformation, DebtorEmail, DebtorPhoneNumber, Gender,
         },
-        DebtStatus, DebtStatusVariable,
     };
 
     use super::*;

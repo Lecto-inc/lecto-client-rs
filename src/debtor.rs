@@ -134,19 +134,14 @@ impl From<DebtorResponse> for Debtor {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum Gender {
+    #[default]
     None,
     Male,
     Female,
     Other,
-}
-
-impl Default for Gender {
-    fn default() -> Self {
-        Self::None
-    }
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize_repr, Serialize_repr, Eq, Hash, Default)]
